@@ -1,3 +1,4 @@
+
 import { SITE } from "@/config/site";
 
 export default function Contact() {
@@ -37,21 +38,6 @@ export default function Contact() {
         </a>
       </div>
 
-      {SITE.socials?.length ? (
-        <div className="mt-6 flex flex-wrap gap-4">
-          {SITE.socials.map((s) => (
-            <a
-              key={s.href}
-              href={s.href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              {s.label}
-            </a>
-          ))}
-        </div>
-      ) : null}
     </section>
   );
 }

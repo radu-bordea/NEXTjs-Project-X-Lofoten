@@ -1,4 +1,5 @@
 import { SITE } from "@/config/site";
+import { VscArrowCircleUp } from "react-icons/vsc";
 
 export default function Footer() {
   return (
@@ -8,14 +9,14 @@ export default function Footer() {
           © {new Date().getFullYear()} {SITE.brand}
         </p>
         <div className="flex gap-4">
-          <a href="#contact" className="hover:underline">
-            Contact
+          <a href="#top" className="hover:underline">
+            <VscArrowCircleUp className="text-xl text-amber-600"/>
           </a>
           <a
             href={SITE.airbnbUrl}
             target="_blank"
             rel="noreferrer"
-            className="hover:underline"
+            className="hover:underline text-amber-600"
           >
             Book on Airbnb
           </a>

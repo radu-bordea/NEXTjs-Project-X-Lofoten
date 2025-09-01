@@ -1,34 +1,35 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SITE } from "@/config/site";
+import { FaInstagram, FaFacebook } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [closing, setClosing] = useState(false);
+  const [open, setOpen] = useState(false); // track if mobile drawer is open
+  const [closing, setClosing] = useState(false); // track if it’s in the middle of closing animation
 
   /** Close with a short fade animation, then run an optional callback */
   const closeWithFade = (after?: () => void) => {
     setClosing(true);
     window.setTimeout(() => {
-      setOpen(false);
-      setClosing(false);
-      after?.();
-    }, 180); // keep in sync with duration-300-ish
+      setOpen(false); // fully close
+      setClosing(false); // reset closing state
+      after?.(); // optional callback after closing
+    }, 180); // matches Tailwind transition duration (≈200ms)
   };
 
-  /** Toggle the mobile drawer (no void-chaining) */
+  /** Toggle the mobile drawer */
   const handleToggle = () => {
     if (open) {
-      closeWithFade();
+      closeWithFade(); // close with animation
     } else {
-      setOpen(true);
+      setOpen(true); // open instantly
     }
   };
 
-  /** Smooth-scroll to ID; optionally close drawer first on mobile */
+  /** Smooth-scroll to an ID on the page; optionally close drawer first on mobile */
   const smoothScrollTo = (id: string, closeFirst = false) => {
     const action = () => {
       const el = document.getElementById(id);
@@ -38,15 +39,17 @@ export default function Navbar() {
     closeFirst ? closeWithFade(action) : action();
   };
 
+  // shared styles for nav links
   const linkBase = "text-gray-900 hover:text-blue-600 transition-colors";
 
+  // Reusable set of nav links (desktop & mobile)
   const NavLinks = ({ mobile }: { mobile?: boolean }) => (
     <>
       <Link
         href="#about"
         className={linkBase}
         onClick={(e) => {
-          e.preventDefault();
+          e.preventDefault(); // stop default jump
           smoothScrollTo("about", !!mobile);
         }}
       >
@@ -85,9 +88,10 @@ export default function Navbar() {
     </>
   );
 
+  // Animation classes for mobile drawer
   const drawerOpen = open && !closing;
   const drawerClasses =
-    "md:hidden absolute left-0 right-0 top-full " +
+    "md:hidden absolute left-0 right-0 top-full " + // positioned below navbar
     "border-t border-gray-200 bg-white px-4 py-3 " +
     "transition-all duration-300 ease-out " +
     (drawerOpen
@@ -97,6 +101,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-neutral-50 border-b border-gray-200 backdrop-blur text-gray-900 p-2 relative">
       <div className="container mx-auto flex h-16 items-center justify-between">
+        {/* Brand (left) */}
         <Link
           href="/"
           className="
@@ -108,7 +113,31 @@ export default function Navbar() {
           {SITE.brand}
         </Link>
 
-        {/* Desktop */}
+        {/* Social icons (Instagram, Facebook) */}
+        <div className="flex items-center p-4 gap-4">
+          <Link
+            href={
+              SITE.socials.find((s) => s.label === "Instagram")?.href || "#"
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="text-gray-600 hover:text-pink-500 transition-colors"
+          >
+            <FaInstagram size={24} />
+          </Link>
+          <Link
+            href={SITE.socials.find((s) => s.label === "Facebook")?.href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            <FaFacebook size={24} />
+          </Link>
+        </div>
+
+        {/* Desktop nav links + CTA button */}
         <div className="hidden items-center gap-6 md:flex">
           <NavLinks />
           <Link
@@ -121,7 +150,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger toggle */}
         <button
           className="rounded-md p-2 md:hidden hover:bg-gray-100"
           onClick={handleToggle}
@@ -132,7 +161,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer (overlayed) */}
+      {/* Mobile drawer (overlayed dropdown) */}
       <div className={drawerClasses} aria-hidden={!drawerOpen}>
         <div className="flex flex-col items-center gap-6">
           <NavLinks mobile />

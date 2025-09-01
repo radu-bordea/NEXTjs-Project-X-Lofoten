@@ -12,8 +12,8 @@ export const SITE = {
     phone: "+47 12 34 56 78",
   },
   address: {
-    line1: "Example street 5",
-    city: "Lofoten",
+    line1: "Moskenesveien 865, 8392 Sørvågen",
+    city: "Sørvågen",
     country: "Norway",
   },
   map: {
