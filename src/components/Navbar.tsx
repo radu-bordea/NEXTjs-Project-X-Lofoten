@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -8,23 +9,34 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
 
+  /** Close with a short fade animation, then run an optional callback */
   const closeWithFade = (after?: () => void) => {
     setClosing(true);
-    setTimeout(() => {
+    window.setTimeout(() => {
       setOpen(false);
       setClosing(false);
       after?.();
-    }, 180);
+    }, 180); // keep in sync with duration-300-ish
   };
 
-  function smoothScrollTo(id: string, closeFirst = false) {
+  /** Toggle the mobile drawer (no void-chaining) */
+  const handleToggle = () => {
+    if (open) {
+      closeWithFade();
+    } else {
+      setOpen(true);
+    }
+  };
+
+  /** Smooth-scroll to ID; optionally close drawer first on mobile */
+  const smoothScrollTo = (id: string, closeFirst = false) => {
     const action = () => {
       const el = document.getElementById(id);
       if (!el) return;
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     };
     closeFirst ? closeWithFade(action) : action();
-  }
+  };
 
   const linkBase = "text-gray-900 hover:text-blue-600 transition-colors";
 
@@ -75,7 +87,8 @@ export default function Navbar() {
 
   const drawerOpen = open && !closing;
   const drawerClasses =
-    "md:hidden absolute left-0 right-0 top-full border-t border-gray-200 bg-white px-4 py-3 " +
+    "md:hidden absolute left-0 right-0 top-full " +
+    "border-t border-gray-200 bg-white px-4 py-3 " +
     "transition-all duration-300 ease-out " +
     (drawerOpen
       ? "opacity-100 translate-y-0 pointer-events-auto"
@@ -87,10 +100,10 @@ export default function Navbar() {
         <Link
           href="/"
           className="
-    text-lg md:text-xl font-semibold tracking-tight
-    bg-gradient-to-r from-gray-600 to-red-400
-    bg-clip-text text-transparent
-  "
+            text-lg md:text-xl font-semibold tracking-tight
+            bg-gradient-to-r from-gray-600 to-red-400
+            bg-clip-text text-transparent
+          "
         >
           {SITE.brand}
         </Link>
@@ -111,19 +124,11 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <button
           className="rounded-md p-2 md:hidden hover:bg-gray-100"
-          onClick={() =>
-            open
-              ? setClosing(true) ||
-                setTimeout(() => {
-                  setOpen(false);
-                  setClosing(false);
-                }, 180)
-              : setOpen(true)
-          }
+          onClick={handleToggle}
           aria-label="Toggle menu"
           aria-expanded={open}
         >
-          {open && !closing ? <X /> : <Menu />}
+          {drawerOpen ? <X /> : <Menu />}
         </button>
       </div>
 
