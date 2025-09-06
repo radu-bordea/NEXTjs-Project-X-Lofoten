@@ -20,7 +20,7 @@ export const SITE = {
     embedSrc: "https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE",
   },
   socials: <SocialLink[]>[
-    { label: "Instagram", href: "https://instagram.com/yourprofile" },
+    { label: "Instagram", href: "https://www.instagram.com/panoramaxlofoten/" },
     { label: "Facebook", href: "https://facebook.com/yourpage" },
   ],
   gallery: <GalleryImage[]>[
