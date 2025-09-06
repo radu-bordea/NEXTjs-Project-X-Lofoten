@@ -37,9 +37,9 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold">{SITE.title}</h1>
 
           {/* Subheading / description */}
-          <p className="mt-4 text-xl md:text-2xl text-gray-700 font-semibold">
+          {/* <p className="mt-4 text-xl md:text-2xl text-gray-700 font-semibold">
             {SITE.description}
-          </p>
+          </p> */}
 
           {/* Call-to-action button: opens Airbnb listing */}
           <Link

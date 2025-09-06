@@ -3,7 +3,7 @@ export type GalleryImage = { src: string; alt: string };
 
 export const SITE = {
   brand: "Project X Lofoten",
-  title: "Project X Lofoten – House for Rent",
+  title: "Project X Lofoten",
   description:
     "Cozy house in Lofoten with mountain and sea views. Photos, amenities, and booking info.",
   airbnbUrl: "https://airbnb.com/rooms/YOUR_LISTING_ID",
