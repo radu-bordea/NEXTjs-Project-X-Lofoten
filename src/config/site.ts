@@ -96,6 +96,10 @@ export const SITE = {
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/panoramaxlofoten/" },
     { label: "Facebook", href: "https://facebook.com/" },
+    {
+      label: "TripAdvisor",
+      href: "https://www.tripadvisor.se/Hotel_Review-g1175194-d12279951-Reviews-Lofoten_Panorama-Stamsund_Vestvagoy_Lofoten_Islands_Nordland_Northern_Norway.html",
+    },
   ] as SocialLink[],
 
   gallery: [
