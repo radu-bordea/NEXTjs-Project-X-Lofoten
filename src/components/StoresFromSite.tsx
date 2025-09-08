@@ -1,18 +1,9 @@
 // components/StoresFromSite.tsx
-import { SITE } from "@/config/site";
-
-type Place = {
-  name: string;
-  category: "store" | "restaurant" | "cafe" | "bar";
-  address?: { city?: string; mapUrl?: string };
-  phone?: string;
-  url?: string;
-  notes?: string;
-};
+import { SITE, type Place } from "@/config/site";
 
 export default function StoresFromSite() {
-  const stores = (SITE as any)?.places?.stores as Place[] | undefined;
-  if (!stores || stores.length === 0) return null;
+  const stores: Place[] = SITE.places?.stores ?? [];
+  if (stores.length === 0) return null;
 
   return (
     <section id="stores" className="container mx-auto px-4 py-12 text-gray-600">

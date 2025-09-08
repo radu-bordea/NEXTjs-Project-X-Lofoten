@@ -11,8 +11,8 @@ type Place = {
 };
 
 export default function RestaurantsFromSite() {
-  const restaurants = (SITE as any)?.places?.restaurants as Place[] | undefined;
-  if (!restaurants || restaurants.length === 0) return null;
+   const restaurants: Place[] = SITE.places?.restaurants ?? [];
+   if (restaurants.length === 0) return null;
 
   return (
     <section

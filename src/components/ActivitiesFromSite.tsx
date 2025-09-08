@@ -14,8 +14,8 @@ type Activity = {
 };
 
 export default function ActivitiesFromSite() {
-  const activities = (SITE as any)?.activities as Activity[] | undefined;
-  if (!activities || activities.length === 0) return null;
+  const activities: Activity[] = SITE.activities ?? [];
+  if (activities.length === 0) return null;
 
   return (
     <section id="activities" className="container mx-auto px-4 py-12 text-gray-600">

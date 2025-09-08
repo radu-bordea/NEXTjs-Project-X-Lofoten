@@ -43,7 +43,35 @@ export type AmenityGroup = {
 
 export type GalleryImage = { src: string; alt: string };
 
-export const SITE = {
+export type SiteConfig = {
+  brand: string;
+  title: string;
+  description: string;
+  siteUrl: string;
+  airbnbUrl: string;
+  contact: { email: string; phone: string };
+  address: Address;
+  map: { embedSrc: string };
+  nearby: {
+    airport?: Link;
+    ferry?: Link;
+    visitorCenter?: Link;
+    bus?: Link;
+    taxis?: Link[]; // we’ll show phone as plain text in UI
+  };
+  socials: SocialLink[];
+  gallery: GalleryImage[];
+  amenitiesSimple: string[];
+  amenities: AmenityGroup[];
+  places: {
+    stores: Place[];
+    restaurants: Place[];
+  };
+  activities: Activity[];
+  infoLinks: Link[];
+};
+
+export const SITE: SiteConfig = {
   brand: "Project X Lofoten",
   title: "Project X Lofoten",
   description:
@@ -57,42 +85,45 @@ export const SITE = {
     email: "jontrygveekern@gmail.com",
     phone: "+47 915 84 016",
   },
+
   address: {
     line1: "Besselvågveien 119, 8392 Sørvågen",
     city: "Sørvågen",
     country: "Norway",
     mapUrl:
       "https://maps.google.com/?q=Besselv%C3%A5gveien+119,+8392+S%C3%B8rv%C3%A5gen",
-  } as Address,
+  },
+
   map: {
     embedSrc:
       "https://www.google.com/maps?q=Besselv%C3%A5gveien+119,+8392+S%C3%B8rv%C3%A5gen&z=16&output=embed",
   },
+
   nearby: {
     airport: {
       label: "Leknes Airport (LKN)",
       href: "https://avinor.no/en/airport/leknes-airport/",
-    } as Link,
+    },
     ferry: {
       label: "Bodø–Værøy–Røst–Moskenes ferry (Torghatten Nord)",
       href: "https://www.torghatten.no/en/our-routes/18-782",
-    } as Link,
+    },
     visitorCenter: {
       label: "Visit Lofoten – Tourist Information",
       href: "https://visitlofoten.com/en/tourist-information-in-lofoten/",
-    } as Link,
-    // ✅ NEW
+    },
     bus: {
       label: "Bus (Reis Nordland)",
       href: "https://reisnordland.no/",
-    } as Link,
+    },
     taxis: [
       {
         label: "Local taxi (Moskenes/Sørvågen area)",
         href: "tel:+47 909 09 190",
       },
-    ] as Link[],
+    ],
   },
+
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/panoramaxlofoten/" },
     { label: "Facebook", href: "https://facebook.com/" },
@@ -100,7 +131,7 @@ export const SITE = {
       label: "TripAdvisor",
       href: "https://www.tripadvisor.se/Hotel_Review-g1175194-d12279951-Reviews-Lofoten_Panorama-Stamsund_Vestvagoy_Lofoten_Islands_Nordland_Northern_Norway.html",
     },
-  ] as SocialLink[],
+  ],
 
   gallery: [
     { src: "/gallery/1.jpg", alt: "Living room" },
@@ -109,9 +140,8 @@ export const SITE = {
     { src: "/gallery/4.png", alt: "View" },
     { src: "/gallery/5.png", alt: "Bathroom" },
     { src: "/gallery/6.png", alt: "Exterior" },
-  ] as GalleryImage[],
+  ],
 
-  // Keep only ONE amenitiesSimple (highlights)
   amenitiesSimple: [
     "Waterfront with sea & mountain views",
     "Fast Wi-Fi",
@@ -225,9 +255,8 @@ export const SITE = {
       label: "Services",
       items: ["Long-term stays allowed (28+ days)"],
     },
-  ] as AmenityGroup[],
+  ],
 
-  // Nearby essentials (you asked for Joker & Matkroken)
   places: {
     stores: [
       {
@@ -250,7 +279,7 @@ export const SITE = {
         url: "https://matkroken.no/",
         notes: "Grocery in Reine (short drive).",
       },
-    ] as Place[],
+    ],
 
     restaurants: [
       {
@@ -314,7 +343,7 @@ export const SITE = {
         },
         url: "https://reinerorbuer.no/en/restaurant/",
       },
-    ] as Place[],
+    ],
   },
 
   activities: [
@@ -345,7 +374,7 @@ export const SITE = {
         mapUrl: "https://maps.google.com/?q=Sørvågen",
       },
     },
-  ] as Activity[],
+  ],
 
   infoLinks: [
     {
@@ -360,10 +389,9 @@ export const SITE = {
       label: "Leknes Airport (departures/arrivals)",
       href: "https://avinor.no/en/airport/leknes-airport/",
     },
-    // ✅ NEW
     {
       label: "Bus schedules (Reis Nordland)",
       href: "https://reisnordland.no/",
     },
-  ] as Link[],
-} as const;
+  ],
+};
