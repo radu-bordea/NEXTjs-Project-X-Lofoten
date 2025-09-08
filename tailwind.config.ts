@@ -5,6 +5,10 @@ const config: Config = {
   theme: {
     extend: {
       container: { center: true, padding: "1rem" },
+      fontFamily: {
+        sans: ["var(--font-manrope)", "system-ui", "ui-sans-serif", "Arial"],
+        display: ["var(--font-fraunces)", "serif"],
+      },
     },
   },
   plugins: [],

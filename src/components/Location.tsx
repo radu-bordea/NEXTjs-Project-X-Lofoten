@@ -1,15 +1,21 @@
 type Props = {
-  /** Google Maps iframe src.
-   * Get it from Google Maps → Share → Embed a map → copy the src attribute. */
   mapSrc: string;
   address?: string;
   nearby?: { label: string; value: string }[];
 };
 
 export default function Location({ mapSrc, address, nearby }: Props) {
+  // tiny helper: detect if value is a URL or phone/mail
+const isLink = (val: string) =>
+  /^https?:\/\//.test(val) || val.startsWith("mailto:");
+
+
   return (
-    <section id="location" className="container mx-auto px-4 py-12">
-      <h2 className="text-2xl font-semibold">Location</h2>
+    <section
+      id="location"
+      className="container mx-auto px-4 py-12 text-gray-600"
+    >
+      <h2 className="text-2xl font-semibold">Location & Directions</h2>
       <p className="mt-2 text-gray-600">
         Located in beautiful Lofoten—close to hikes, beaches, and fishing
         villages.
@@ -27,7 +33,22 @@ export default function Location({ mapSrc, address, nearby }: Props) {
               {nearby.map((n) => (
                 <div key={n.label}>
                   <span className="font-medium">{n.label}: </span>
-                  <span className="text-gray-700">{n.value}</span>
+                  {isLink(n.value) ? (
+                    <a
+                      href={n.value}
+                      target={n.value.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        n.value.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      className="text-blue-600 underline"
+                    >
+                      {n.value}
+                    </a>
+                  ) : (
+                    <span className="text-gray-700">{n.value}</span>
+                  )}
                 </div>
               ))}
             </div>

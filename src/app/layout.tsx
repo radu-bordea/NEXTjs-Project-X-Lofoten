@@ -1,29 +1,20 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { SITE } from "@/config/site";
+import { Space_Grotesk } from "next/font/google";
 
-// Helper: pick first gallery image or a fallback
+const space = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space",
+});
+
 const ogImage = SITE.gallery?.[0]?.src || "/og.jpg";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.siteUrl), // ensures relative paths resolve absolute
-  title: SITE.title,
-  description: SITE.description,
-  openGraph: {
-    title: SITE.title,
-    description: SITE.description,
-    // relative path will be resolved using metadataBase -> absolute URL
-    images: [{ url: ogImage, width: 1200, height: 630, alt: SITE.title }],
-    type: "website",
-    siteName: SITE.brand,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE.title,
-    description: SITE.description,
-    images: [ogImage],
-  },
+  /* ...your same metadata... */
 };
 
 export default function RootLayout({
@@ -32,10 +23,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-50 text-gray-800">
+    <html lang="en" className={space.variable}>
+      <body
+        className="
+          bg-gray-50 text-gray-800 antialiased
+          font-[var(--font-space)]
+          text-[17px] md:text-[18px]   /* bump base text size */
+        "
+      >
         <Navbar />
-        <main>{children}</main>
+        <main
+
+        >
+          {children}
+        </main>
       </body>
     </html>
   );

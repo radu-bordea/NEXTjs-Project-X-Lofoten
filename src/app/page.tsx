@@ -1,8 +1,13 @@
 import Home from "../components/Home";
 import Gallery from "../components/Gallery";
-import Location from "../components/Location";
+// import Location from "../components/Location";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import LocationFromSite from "@/components/LocationFromSite";
+import AmenitiesFromSite from "@/components/AmenitiesFromSite";
+import ActivitiesFromSite from "@/components/ActivitiesFromSite";
+import RestaurantsFromSite from "@/components/RestaurantsFromSite";
+import StoresFromSite from "@/components/StoresFromSite";
 
 export default function HomePage() {
   return (
@@ -11,14 +16,13 @@ export default function HomePage() {
 
       <Gallery />
 
-      <Location
-        mapSrc="https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE"
-        address="Example street 5, Lofoten, Norway"
-        nearby={[
-          { label: "Nearest airport", value: "Leknes (LKN) / Evenes (EVE)" },
-          { label: "Parking", value: "Free private parking" },
-        ]}
-      />
+      {/* ...other sections... */}
+      <LocationFromSite />
+      <AmenitiesFromSite />
+      <ActivitiesFromSite />
+      <RestaurantsFromSite />
+      <StoresFromSite />
+      {/* ...other sections... */}
 
       <Contact />
       <Footer />

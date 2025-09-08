@@ -1,9 +1,11 @@
-
 import { SITE } from "@/config/site";
 
 export default function Contact() {
   return (
-    <section id="contact" className="container mx-auto px-4 py-12">
+    <section
+      id="contact"
+      className="container mx-auto px-4 py-12 text-gray-600"
+    >
       <h2 className="text-2xl font-semibold">Contact & Booking</h2>
       <p className="mt-2 text-gray-600">
         For availability and reservations, book via Airbnb or contact us
@@ -37,7 +39,6 @@ export default function Contact() {
           Book on Airbnb
         </a>
       </div>
-
     </section>
   );
 }
