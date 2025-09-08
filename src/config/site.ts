@@ -270,10 +270,10 @@ export const SITE: SiteConfig = {
         notes: "Small grocery; walkable from the house.",
       },
       {
-        name: "Matkroken Reine",
+        name: "Matkroken Sørvågen",
         category: "store",
         address: {
-          city: "Reine",
+          city: "Sørvågen",
           mapUrl: "https://maps.google.com/?q=Matkroken+Reine",
         },
         url: "https://matkroken.no/",
