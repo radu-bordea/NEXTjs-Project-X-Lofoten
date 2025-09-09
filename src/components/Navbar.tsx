@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SITE } from "@/config/site";
-import { FaInstagram, FaTripadvisor } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -125,17 +125,6 @@ export default function Navbar() {
             className="text-pink-400 hover:text-pink-600 transition-colors"
           >
             <FaInstagram size={28} />
-          </Link>
-          <Link
-            href={
-              SITE.socials.find((s) => s.label === "TripAdvisor")?.href || "#"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="TripAdvisor"
-            className="text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            <FaTripadvisor className="bg-green-200 hover:bg-green-300  rounded-full border-1 border-green-600 text-green-800 p-1" size={28} />
           </Link>
         </div>
 
