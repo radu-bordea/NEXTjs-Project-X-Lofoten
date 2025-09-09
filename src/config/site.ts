@@ -43,13 +43,18 @@ export type AmenityGroup = {
 
 export type GalleryImage = { src: string; alt: string };
 
+export type Contact = {
+  email: string,
+  phone: string
+}
+
 export type SiteConfig = {
   brand: string;
   title: string;
   description: string;
   siteUrl: string;
   airbnbUrl: string;
-  contact: { email: string; phone: string };
+  contacts: Contact[];
   address: Address;
   map: { embedSrc: string };
   nearby: {
@@ -72,8 +77,8 @@ export type SiteConfig = {
 };
 
 export const SITE: SiteConfig = {
-  brand: "Project X Lofoten",
-  title: "Project X Lofoten",
+  brand: "Panorama X Lofoten",
+  title: "Panorama X Lofoten",
   description:
     "Cozy house in Lofoten with mountain and sea views. Photos, amenities, and booking info.",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
@@ -81,10 +86,16 @@ export const SITE: SiteConfig = {
   airbnbUrl:
     "https://www.airbnb.com/rooms/51008064?source_impression_id=p3_1757333159_P3Dn2wasQT4u_azd",
 
-  contact: {
-    email: "jontrygveekern@gmail.com",
-    phone: "+47 915 84 016",
-  },
+  contacts: [
+    {
+      email: "jontrygveekern@gmail.com",
+      phone: "+47 915 84 016",
+    },
+    {
+      email: "tina.cathrin@gmai.com",
+      phone: "+47 911 25 506",
+    },
+  ],
 
   address: {
     line1: "Besselvågveien 119, 8392 Sørvågen",
