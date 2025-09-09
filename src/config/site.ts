@@ -44,9 +44,9 @@ export type AmenityGroup = {
 export type GalleryImage = { src: string; alt: string };
 
 export type Contact = {
-  email: string,
-  phone: string
-}
+  email: string;
+  phone: string;
+};
 
 export type SiteConfig = {
   brand: string;
@@ -88,12 +88,12 @@ export const SITE: SiteConfig = {
 
   contacts: [
     {
-      email: "jontrygveekern@gmail.com",
-      phone: "+47 915 84 016",
+      email: "tina.cathrin@gmail.com",
+      phone: "+47 911 25 506",
     },
     {
-      email: "tina.cathrin@gmai.com",
-      phone: "+47 911 25 506",
+      email: "jontrygveekern@gmail.com",
+      phone: "+47 915 84 016",
     },
   ],
 
