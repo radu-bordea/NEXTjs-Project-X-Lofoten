@@ -11,7 +11,7 @@ const space = Space_Grotesk({
   variable: "--font-space",
 });
 
-const ogImage = SITE.gallery?.[0]?.src || "/og.jpg";
+// const ogImage = SITE.gallery?.[0]?.src || "/og.jpg";
 
 export const metadata: Metadata = {
   /* ...your same metadata... */

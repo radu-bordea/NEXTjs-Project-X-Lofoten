@@ -2,7 +2,6 @@
 import { SITE } from "@/config/site";
 
 import { client as sanity } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
 
 const propertyQuery = `*[_type=="property"][0]{ 
   brand, title, airbnbUrl,

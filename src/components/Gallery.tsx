@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { SITE } from "@/config/site";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -15,7 +16,7 @@ const propertyQuery = `*[_type=="property"][0]{
 
 
 type LocalImg = { src: string; alt: string };
-type SanityImg = { asset?: any; alt?: string };
+type SanityImg = { asset?: SanityImageSource; alt?: string };
 
 export default function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
@@ -53,22 +54,29 @@ export default function Gallery() {
     return SITE.gallery;
   }, [sanityImages]);
 
-  const close = () => setIndex(null);
-  const prev = () =>
-    setIndex((i) => (i !== null ? (i - 1 + images.length) % images.length : i));
-  const next = () =>
-    setIndex((i) => (i !== null ? (i + 1) % images.length : i));
+  const close = useCallback(() => setIndex(null), []);
+  const prev = useCallback(
+    () =>
+      setIndex((i) =>
+        i !== null ? (i - 1 + images.length) % images.length : i
+      ),
+    [images.length]
+  );
+  const next = useCallback(
+    () => setIndex((i) => (i !== null ? (i + 1) % images.length : i)),
+    [images.length]
+  );
 
   useEffect(() => {
-    const h = (e: KeyboardEvent) => {
+    const handler = (e: KeyboardEvent) => {
       if (index === null) return;
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
-    window.addEventListener("keydown", h);
-    return () => window.removeEventListener("keydown", h);
-  }, [index, images.length]);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [index, close, prev, next]);
 
   return (
     <section
