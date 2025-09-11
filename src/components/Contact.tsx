@@ -1,6 +1,26 @@
+// src/components/Contact.tsx (no "use client")
 import { SITE } from "@/config/site";
 
-export default function Contact() {
+import { client as sanity } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+
+const propertyQuery = `*[_type=="property"][0]{ 
+  brand, title, airbnbUrl,
+  contacts[]{email,phone},
+  gallery[]{asset->, alt}
+}`;
+
+type Contact = { email: string; phone: string };
+
+export default async function Contact() {
+  let contacts: Contact[] = SITE.contacts;
+  try {
+    const data = await sanity.fetch(propertyQuery);
+    if (data?.contacts?.length) contacts = data.contacts as Contact[];
+  } catch {
+    // ignore and use fallback
+  }
+
   return (
     <section
       id="contact"
@@ -13,7 +33,7 @@ export default function Contact() {
       </p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
-        {SITE.contacts.map((c) => (
+        {contacts.map((c) => (
           <div
             key={c.email}
             className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50"
@@ -32,7 +52,6 @@ export default function Contact() {
             </a>
           </div>
         ))}
-
       </div>
     </section>
   );
