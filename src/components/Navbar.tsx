@@ -53,7 +53,7 @@ export default function Navbar() {
           smoothScrollTo("about", !!mobile);
         }}
       >
-        About
+        Home
       </Link>
       <Link
         href="#gallery"
