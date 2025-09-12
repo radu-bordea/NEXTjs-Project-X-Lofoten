@@ -8,20 +8,33 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { client as sanity } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 
-const propertyQuery = `*[_type=="property"][0]{ 
-  brand, title, airbnbUrl,
-  contacts[]{email,phone},
-  gallery[]{asset->, alt}
+// Query returns width/height so we can render without cropping
+const propertyQuery = `*[_type=="property"][0]{
+  gallery[]{
+    alt,
+    asset->{
+      _id,
+      metadata{ dimensions{ width, height, aspectRatio } }
+    }
+  }
 }`;
 
-
-type LocalImg = { src: string; alt: string };
-type SanityImg = { asset?: SanityImageSource; alt?: string };
+type LocalImg = { src: string; alt: string; width: number; height: number };
+type SanityImg = {
+  alt?: string;
+  asset?: {
+    _id: string;
+    metadata?: {
+      dimensions?: { width: number; height: number; aspectRatio: number };
+    };
+  };
+};
 
 export default function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
   const [sanityImages, setSanityImages] = useState<SanityImg[] | null>(null);
 
+  // Fetch from Sanity once
   useEffect(() => {
     let mounted = true;
     sanity
@@ -37,21 +50,40 @@ export default function Gallery() {
     };
   }, []);
 
+  // Build a unified array that preserves native aspect ratio
   const images = useMemo<LocalImg[]>(() => {
     if (sanityImages && sanityImages.length) {
       return sanityImages
         .map((img) => {
-          if (!img?.asset) return null;
-          const src = urlFor(img.asset)
-            .width(1600)
-            .height(1200)
-            .fit("crop")
+          const dims = img.asset?.metadata?.dimensions;
+          if (!img.asset || !dims) return null;
+
+          // Generate a URL at “max” fit (no hard crop). We can cap width per column.
+          // For 2–3 columns, ~1200px wide srcs are plenty; browser will downscale via `sizes`.
+          const src = urlFor(img.asset as unknown as SanityImageSource)
+            .fit("max") // <-- keep entire image (no crop)
+            .auto("format") // <-- webp/avif when possible
+            .width(1200)
             .url();
-          return { src, alt: img.alt || "Photo" };
+
+          return {
+            src,
+            alt: img.alt || "Photo",
+            width: Math.max(1, Math.round(dims.width)),
+            height: Math.max(1, Math.round(dims.height)),
+          };
         })
         .filter(Boolean) as LocalImg[];
     }
-    return SITE.gallery;
+
+    // Fallback to your static SITE.gallery (no known dims). Assume 4:3 so layout stays stable.
+    // If some are portrait, you can optionally add real dims in SITE later.
+    return SITE.gallery.map((g) => ({
+      src: g.src,
+      alt: g.alt,
+      width: 1200,
+      height: 900,
+    }));
   }, [sanityImages]);
 
   const close = useCallback(() => setIndex(null), []);
@@ -67,6 +99,7 @@ export default function Gallery() {
     [images.length]
   );
 
+  // ESC / arrows
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (index === null) return;
@@ -86,24 +119,30 @@ export default function Gallery() {
       <h2 className="text-2xl font-semibold">Gallery</h2>
       <p className="mt-2">A glimpse of the house and surroundings.</p>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+      {/* Masonry using CSS columns. Each tile keeps native aspect ratio. */}
+      <div className="mt-6 columns-2 md:columns-3 gap-3 md:gap-4 [column-fill:_balance]">
         {images.map((img, i) => (
           <button
             key={`${img.src}-${i}`}
             onClick={() => setIndex(i)}
-            className="relative aspect-[4/3] overflow-hidden rounded-xl focus:outline-none"
+            className="mb-3 md:mb-4 block w-full overflow-hidden rounded-xl focus:outline-none break-inside-avoid"
+            title={img.alt}
           >
             <Image
               src={img.src}
               alt={img.alt}
-              fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              width={img.width}
+              height={img.height}
+              // Stretch to column width, keep aspect ratio
+              className="w-full h-auto transition-transform duration-300 hover:scale-[1.02]"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              // priority can remain false; the hero handles LCP
             />
           </button>
         ))}
       </div>
 
+      {/* Modal keeps object-contain so mixed orientations display full */}
       {index !== null && images[index] && (
         <div
           className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
